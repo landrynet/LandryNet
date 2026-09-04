@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String?
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email, role])
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  content     String?
+  stack       String
+  category    String   @default("OTHER")
+  imageUrl    String?
+  liveUrl     String?
+  sourceUrl   String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, featured])
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  category  String
+  level     Int      @default(1)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("NEW")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  content       String
+  coverImage    String?
+  tags          String
+  published     Boolean  @default(false)
+  views         Int      @default(0)
+  publishedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  comments      Comment[]
+
+  @@index([published, publishedAt])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  content   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([postId, approved])
+}

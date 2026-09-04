@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export function Hero() {
+  return <section className="public-hero page-grid"><div className="hero-copy"><p className="eyebrow">Landry Net / Full-stack & réseaux</p><h1>Je relie les idées aux systèmes.</h1><p className="hero-intro">Je conçois des applications web claires et des infrastructures réseau solides, de l&apos;architecture au dernier détail.</p><div className="hero-tags"><span>Réseaux</span><span>Développement</span><span>Sécurité</span><span>Cloud</span></div><div className="hero-actions"><Link className="button button-dark" href="/projets">Voir mes projets <span>↗</span></Link><Link className="text-link" href="/contact">Me contacter <span>↗</span></Link></div></div><div className="hero-art" aria-label="Composition abstraite représentant un réseau" role="img"><span className="hero-art-label">Landry Net / Available</span><div className="network-lines" aria-hidden="true"><i /><i /><i /><i /><i /></div><div className="hero-shape hero-shape-one" /><div className="hero-shape hero-shape-two" /><div className="hero-shape hero-shape-three" /><span className="hero-art-note">Connect / build / repeat</span></div></section>;
+}

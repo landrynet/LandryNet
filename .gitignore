@@ -23,6 +23,9 @@
 # misc
 .DS_Store
 *.pem
+*.db
+*.db-journal
+/src/generated/
 
 # debug
 npm-debug.log*
@@ -35,6 +38,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# local uploaded media (use Cloudinary in production)
+/public/uploads/
 
 # typescript
 *.tsbuildinfo
