@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiBarChart2, FiBookOpen, FiChevronRight, FiInbox, FiLayout, FiLogOut, FiMessageSquare, FiTool, FiX } from "react-icons/fi";
+import { FiBarChart2, FiBookOpen, FiChevronRight, FiInbox, FiLayout, FiLogOut, FiMessageSquare, FiTool, FiX, FiBriefcase, FiSettings } from "react-icons/fi";
 
 const links = [
   { href: "/admin/dashboard", label: "Dashboard", icon: FiBarChart2 },
   { href: "/admin/projets", label: "Projets", icon: FiLayout },
-  { href: "/admin/blog", label: "Blog", icon: FiBookOpen },
+  { href: "/admin/experience", label: "Parcours", icon: FiBriefcase },
+  { href: "/admin/blog", label: "Notes", icon: FiBookOpen },
   { href: "/admin/messages", label: "Messages", icon: FiMessageSquare },
+  { href: "/admin/settings", label: "Paramètres", icon: FiSettings },
 ];
 
 export function AdminSidebar({ isOpen, onClose, userName, userEmail }: { isOpen: boolean; onClose: () => void; userName: string; userEmail: string }) {
@@ -19,9 +21,9 @@ export function AdminSidebar({ isOpen, onClose, userName, userEmail }: { isOpen:
       <aside className={`admin-sidebar ${isOpen ? "is-open" : ""}`} aria-label="Sidebar admin">
         <div className="admin-sidebar__top">
           <Link href="/" className="admin-brand" onClick={onClose}>
-            <span className="admin-brand__mark">A</span>
+            <span className="admin-brand__mark">L</span>
             <div>
-              <strong>Alex Martin</strong>
+              <strong>Landry Net</strong>
               <small>Portfolio</small>
             </div>
           </Link>

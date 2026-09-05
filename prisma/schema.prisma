@@ -20,32 +20,80 @@ model User {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String
-  content     String?
-  stack       String
-  category    String   @default("OTHER")
-  imageUrl    String?
-  liveUrl     String?
-  sourceUrl   String?
-  featured    Boolean  @default(false)
-  published   Boolean  @default(false)
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String
+  content      String?  
+  problem      String?  
+  solution     String?  
+  role         String?  
+  features     String?  
+  architecture String?  
+  stack        String   
+  category     String   @default("OTHER")
+  imageUrl     String?  
+  liveUrl      String?
+  sourceUrl    String?
+  featured     Boolean  @default(false)
+  published    Boolean  @default(false)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  images       ProjectImage[]
 
   @@index([published, featured])
+}
+
+model ProjectImage {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  title       String
+  company     String?
+  period      String   
+  description String
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Skill {
   id        String   @id @default(cuid())
   name      String   @unique
-  category  String
-  level     Int      @default(1)
+  category  String   
+  level     Int      @default(1) 
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String   
+  url       String
+  icon      String?  
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
 }
 
 model ContactMessage {

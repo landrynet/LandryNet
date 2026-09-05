@@ -7,8 +7,11 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const links = [
   { href: "/", label: "Accueil" },
+  { href: "/#about", label: "À propos" },
   { href: "/projets", label: "Projets" },
-  { href: "/blog", label: "Blog" },
+  { href: "/#skills", label: "Compétences" },
+  { href: "/#experience", label: "Parcours" },
+  { href: "/blog", label: "Notes" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -35,6 +38,7 @@ export function Navbar() {
       <nav className={`public-nav-links ${open ? "is-open" : ""}`} aria-label="Navigation principale">
         {links.map((link) => <Link key={link.href} className={pathname === link.href ? "is-active" : ""} href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>)}
         <ThemeToggle />
+        <a href="/cv.pdf" target="_blank" className="button button-dark nav-cta">Télécharger mon CV</a>
       </nav>
     </header>
   );

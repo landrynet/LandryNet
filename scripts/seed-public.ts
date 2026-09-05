@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
@@ -11,23 +12,82 @@ const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 const projects = [
-  { title: "Atelier Metrics", slug: "atelier-metrics", description: "Un dashboard rapide pour repérer le signal avant le bruit.", content: "Atelier Metrics transforme des données complexes en décisions lisibles. L'interface privilégie la hiérarchie, la vitesse et des interactions simples.", stack: "Next.js, TypeScript, Prisma", category: "PROFESSIONAL", featured: true, published: true },
-  { title: "Field Notes", slug: "field-notes", description: "Un système éditorial pensé pour des textes durables.", content: "Field Notes est un espace de publication calme, conçu autour d'un modèle de contenu solide et d'une lecture confortable.", stack: "React, PostgreSQL, Motion", category: "PERSONAL", featured: true, published: true },
-  { title: "Relay Commerce", slug: "relay-commerce", description: "Une expérience e-commerce où le produit reste au centre.", content: "Relay Commerce réduit les frictions du parcours d'achat et met les détails produit au premier plan.", stack: "Next.js, Stripe, Zod", category: "ACADEMIC", featured: false, published: true },
+  { 
+    title: "Edu-Pay", 
+    slug: "edu-pay", 
+    description: "Système de gestion scolaire et paiements.", 
+    content: "Une solution complète de gestion scolaire incluant la facturation, le suivi des présences et un portail parent.", 
+    problem: "Les écoles locales perdaient beaucoup de temps à gérer les paiements en espèces et les reçus papier.",
+    solution: "Une application full-stack permettant de digitaliser les paiements et le suivi.",
+    role: "Full-Stack Developer & Architect",
+    stack: "Next.js, TypeScript, PostgreSQL", 
+    category: "PROFESSIONAL", 
+    featured: true, 
+    published: true 
+  },
+  { 
+    title: "Infrastructure Réseau Multi-Site", 
+    slug: "infra-network", 
+    description: "Déploiement et sécurisation d'une infrastructure réseau.", 
+    content: "Mise en place de VLANs, VPN site-à-site et pare-feu pour une entreprise locale.", 
+    stack: "Cisco, TCP/IP, VLAN, Firewall", 
+    category: "PROFESSIONAL", 
+    featured: true, 
+    published: true 
+  }
 ];
 
 const posts = [
-  { title: "Construire une interface qui respire", slug: "interface-qui-respire", excerpt: "Quelques principes pour rendre les systèmes complexes plus lisibles.", content: "## La lisibilité est une fonctionnalité\n\nUne bonne interface laisse de la place à la décision. Elle hiérarchise, réduit le bruit et accompagne chaque action.", tags: "design, produit", published: true, publishedAt: new Date("2026-08-12") },
+  { 
+    title: "Architecture réseau moderne", 
+    slug: "architecture-reseau", 
+    excerpt: "Comment penser son infrastructure pour la scalabilité.", 
+    content: "## Séparation des flux\n\nL'utilisation des VLANs permet...", 
+    tags: "réseaux, architecture", 
+    published: true, 
+    publishedAt: new Date("2026-08-12") 
+  },
+];
+
+const experiences = [
+  {
+    title: "Full-Stack Developer & Network Engineer",
+    company: "Indépendant",
+    period: "Aujourd'hui",
+    description: "Développement d'applications web sur mesure et mise en place d'infrastructures réseaux.",
+    published: true,
+    sortOrder: 1
+  }
+];
+
+const settings = [
+  { key: "SITE_TITLE", value: "Landry Net - Portfolio" },
+  { key: "SITE_DESCRIPTION", value: "Portfolio de Landry Net, Full-Stack Developer et Network Engineer." },
+  { key: "HERO_KICKER", value: "Landry Net / Available" },
+  { key: "HERO_TITLE", value: "Je relie les idées aux systèmes." },
+  { key: "HERO_SUBTITLE", value: "Full-Stack Developer · Network Engineer" }
 ];
 
 async function main() {
   for (const project of projects) await prisma.project.upsert({ where: { slug: project.slug }, update: project, create: project });
   for (const post of posts) await prisma.post.upsert({ where: { slug: post.slug }, update: post, create: post });
-  for (const skill of [
-    ["TCP/IP", "Réseaux"], ["VLAN", "Réseaux"], ["Firewall", "Réseaux"], ["Cisco", "Réseaux"],
-    ["TypeScript", "Développement"], ["React", "Développement"], ["Next.js", "Développement"], ["Node.js", "Développement"],
-    ["Git", "Outils"], ["Docker", "Outils"], ["Prisma", "Outils"], ["CI/CD", "Outils"],
-  ]) await prisma.skill.upsert({ where: { name: skill[0] }, update: { category: skill[1] }, create: { name: skill[0], category: skill[1] } });
+  
+  const currentSkills = await prisma.skill.findMany();
+  if (currentSkills.length === 0) {
+    for (const skill of [
+      ["TCP/IP", "Networks"], ["VLAN", "Networks"], ["Firewall", "Networks"], ["Routing", "Networks"],
+      ["TypeScript", "Frontend"], ["React", "Frontend"], ["Next.js", "Frontend"], 
+      ["Node.js", "Backend"], ["PostgreSQL", "Database"], ["APIs REST", "Backend"],
+      ["Git", "DevOps"], ["Docker", "DevOps"], ["Linux", "DevOps"], ["CI/CD", "DevOps"],
+    ]) await prisma.skill.upsert({ where: { name: skill[0] }, update: { category: skill[1] }, create: { name: skill[0], category: skill[1] } });
+  }
+
+  const currentExp = await prisma.experience.findMany();
+  if (currentExp.length === 0) {
+    for (const exp of experiences) await prisma.experience.create({ data: exp });
+  }
+
+  for (const setting of settings) await prisma.siteSetting.upsert({ where: { key: setting.key }, update: { value: setting.value }, create: setting });
 }
 
 main().then(() => prisma.$disconnect()).catch(async (error) => { console.error(error); await prisma.$disconnect(); process.exit(1); });

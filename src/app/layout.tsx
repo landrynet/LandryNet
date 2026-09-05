@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   description: "Portfolio d'Alex Martin, développeur full-stack indépendant.",
   keywords: ["développeur full-stack", "Next.js", "React", "TypeScript", "portfolio"],
   authors: [{ name: "Alex Martin" }],
+  verification: {
+    google: "hy-Ls1KUzF0lNYYdljumXoBicydwtq18xFlerNSTrSk",
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
